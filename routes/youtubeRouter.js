@@ -1,10 +1,8 @@
-const express = require("express");
-const youtubeRouter = express.Router();
+import express from "express";
+import { getSearchSuggestion } from "../controllers/youtubeController.js";
 
-const {
-    getSearchSuggestion
-} = require("../controllers/youtubeController")
+const youtubeRouter = express.Router();
 
 youtubeRouter.get("/searchSuggestion", getSearchSuggestion);
 
-module.exports = youtubeRouter;
+export default youtubeRouter;

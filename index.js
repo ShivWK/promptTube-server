@@ -1,11 +1,11 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const dotenv = require("dotenv");
-const cors = require("cors");
-const app = express();
+import express from "express";
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+import cors from "cors";
+import youtubeRouter from "./routes/youtubeRouter.js";
+import userRouter from "./routes/userActivityRoutes.js";
 
-const youtubeRouter = require("./routes/youtubeRouter");
-const userRouter = require("./routes/userActivityRoutes");
+const app = express();
 
 app.use(express.json());
 dotenv.config({ path: "./.env" });

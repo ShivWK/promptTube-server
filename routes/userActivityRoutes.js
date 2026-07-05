@@ -1,6 +1,5 @@
-const express = require("express");
-const userRouter = express.Router();
-const { 
+import express from "express";
+import {
     addVideo,
     removeVideo,
     getVideo,
@@ -10,7 +9,9 @@ const {
     addComment,
     getComment,
     removeComment
- } = require("./../controllers/userActivityController");
+} from "./../controllers/userActivityController.js";
+
+const userRouter = express.Router();
 
 userRouter.route("/memoryVideos")
     .get(getVideo)
@@ -27,4 +28,4 @@ userRouter.route("/comments")
     .get(getComment)
     .delete(removeComment);
 
-module.exports = userRouter;
+export default userRouter;

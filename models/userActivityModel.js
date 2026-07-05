@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const userActivityModel = new mongoose.Schema({
     userId: {
@@ -20,4 +20,4 @@ const userActivityModel = new mongoose.Schema({
 }, { versionKey: false })
 
 const UserActivityModel = mongoose.model("UserActivity", userActivityModel);
-module.exports = UserActivityModel;
+export default UserActivityModel;

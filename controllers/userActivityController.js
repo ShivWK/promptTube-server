@@ -1,10 +1,9 @@
-const { asyncErrorHandler, requiredFieldsCheck } = require("./../utils/wrapper");
-const UserActivityModel = require("./../models/userActivityModel");
-const SubscriptionsModel = require("./../models/subscriptions");
-const CommentsModel = require("./../models/commentsModel");
-const clearIfEmpty = require("./../utils/wrapper");
+import { asyncErrorHandler, requiredFieldsCheck, clearIfEmpty } from "./../utils/wrapper.js";
+import UserActivityModel from "./../models/userActivityModel.js";
+import SubscriptionsModel from "./../models/subscriptions.js";
+import CommentsModel from "./../models/commentsModel.js";
 
-exports.addVideo = asyncErrorHandler(async (req, res) => {
+export const addVideo = asyncErrorHandler(async (req, res) => {
     const { userId, videoId, videoType } = req.body;
 
     requiredFieldsCheck({ args: [userId, videoId, videoType], fields: ["userId", "videoId", "videoType"] })
@@ -21,7 +20,7 @@ exports.addVideo = asyncErrorHandler(async (req, res) => {
     })
 })
 
-exports.getVideo = asyncErrorHandler(async (req, res) => {
+export const getVideo = asyncErrorHandler(async (req, res) => {
     const { userId } = req.query;
     requiredFieldsCheck({ args: [userId], fields: ["userId"] })
 
@@ -33,7 +32,7 @@ exports.getVideo = asyncErrorHandler(async (req, res) => {
     })
 })
 
-exports.removeVideo = asyncErrorHandler(async (req, res) => {
+export const removeVideo = asyncErrorHandler(async (req, res) => {
     const { userId, videoType, videoId } = req.body;
     requiredFieldsCheck({ args: [userId, videoType], fields: ["userId", "videoType"] });
 
@@ -58,7 +57,7 @@ exports.removeVideo = asyncErrorHandler(async (req, res) => {
     }
 })
 
-exports.addSubscription = asyncErrorHandler(async (req, res) => {
+export const addSubscription = asyncErrorHandler(async (req, res) => {
     const { userId, channelId } = req.body;
     requiredFieldsCheck({ args: [userId, channelId], fields: ["userId", "channelId"] });
 
@@ -74,7 +73,7 @@ exports.addSubscription = asyncErrorHandler(async (req, res) => {
     })
 })
 
-exports.getSubscription = asyncErrorHandler(async (req, res) => {
+export const getSubscription = asyncErrorHandler(async (req, res) => {
     const { userId } = req.query;
     requiredFieldsCheck({ args: [userId], fields: ["userId"] });
 
@@ -86,7 +85,7 @@ exports.getSubscription = asyncErrorHandler(async (req, res) => {
     })
 })
 
-exports.removeSubscription = asyncErrorHandler(async (req, res) => {
+export const removeSubscription = asyncErrorHandler(async (req, res) => {
     const { userId, channelId } = req.body;
     requiredFieldsCheck({ args: [userId, channelId], fields: ["userId", "channelId"] });
 
@@ -111,7 +110,7 @@ exports.removeSubscription = asyncErrorHandler(async (req, res) => {
     }
 })
 
-exports.addComment = asyncErrorHandler(async (req, res) => {
+export const addComment = asyncErrorHandler(async (req, res) => {
     const { userId, videoId, comment } = req.body;
     requiredFieldsCheck({ args: [userId, videoId, comment], fields: ["userId", "videoId", "comment"] });
 
@@ -127,7 +126,7 @@ exports.addComment = asyncErrorHandler(async (req, res) => {
     })
 })
 
-exports.getComment = asyncErrorHandler(async (req, res) => {
+export const getComment = asyncErrorHandler(async (req, res) => {
     const { userId } = req.query;
     requiredFieldsCheck({ args: [userId], fields: ["userId"] });
 
@@ -139,7 +138,7 @@ exports.getComment = asyncErrorHandler(async (req, res) => {
     })
 })
 
-exports.removeComment = asyncErrorHandler(async (req, res) => {
+export const removeComment = asyncErrorHandler(async (req, res) => {
     const { userId, comment, videoId } = req.body;
     requiredFieldsCheck({ args: [userId, videoId, comment], fields: ["userId", "videoId", "comment"] });
 

@@ -1,4 +1,4 @@
-exports.asyncErrorHandler = (func) => async (req, res, next) => {
+export const asyncErrorHandler = (func) => async (req, res, next) => {
     try {
       await func(req, res, next)
     } catch (err) {
@@ -11,7 +11,7 @@ exports.asyncErrorHandler = (func) => async (req, res, next) => {
     }
 }
 
-exports.requiredFieldsCheck = ({ args, fields }) => {
+export const requiredFieldsCheck = ({ args, fields }) => {
     args.forEach((param, index) => {
         if (!param) {
             const fieldName = fields?.[index] || "unknown Field";
@@ -20,7 +20,7 @@ exports.requiredFieldsCheck = ({ args, fields }) => {
     })
 }
 
-exports.clearIfEmpty = async ({ Model, filter, field }) => {
+export const clearIfEmpty = async ({ Model, filter, field }) => {
     const doc = await Model.findOne(filter);
 
     if (doc && doc[field].length === 0) {

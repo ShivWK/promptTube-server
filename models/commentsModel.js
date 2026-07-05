@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const commentsSchema = new mongoose.Schema({
     userId: {
@@ -18,4 +18,4 @@ const commentsSchema = new mongoose.Schema({
 }, { versionKey: false })
 
 const CommentsModel = mongoose.model("Comments", commentsSchema);
-module.exports = CommentsModel;
+export default CommentsModel;
