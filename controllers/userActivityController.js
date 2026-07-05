@@ -4,6 +4,7 @@ import SubscriptionsModel from "./../models/subscriptions.js";
 import CommentsModel from "./../models/commentsModel.js";
 
 export const addVideo = asyncErrorHandler(async (req, res) => {
+    console.log("HIT addVideo");
     const { userId, videoId, videoType } = req.body;
 
     requiredFieldsCheck({ args: [userId, videoId, videoType], fields: ["userId", "videoId", "videoType"] })
@@ -21,6 +22,8 @@ export const addVideo = asyncErrorHandler(async (req, res) => {
 })
 
 export const getVideo = asyncErrorHandler(async (req, res) => {
+    console.log("HIT getVideo");
+
     const { userId } = req.query;
     requiredFieldsCheck({ args: [userId], fields: ["userId"] })
 
@@ -33,6 +36,8 @@ export const getVideo = asyncErrorHandler(async (req, res) => {
 })
 
 export const removeVideo = asyncErrorHandler(async (req, res) => {
+    console.log("HIT removeVideo");
+
     const { userId, videoType, videoId } = req.body;
     requiredFieldsCheck({ args: [userId, videoType], fields: ["userId", "videoType"] });
 
@@ -58,6 +63,8 @@ export const removeVideo = asyncErrorHandler(async (req, res) => {
 })
 
 export const addSubscription = asyncErrorHandler(async (req, res) => {
+    console.log("HIT addSubscription");
+
     const { userId, channelId } = req.body;
     requiredFieldsCheck({ args: [userId, channelId], fields: ["userId", "channelId"] });
 
@@ -74,6 +81,8 @@ export const addSubscription = asyncErrorHandler(async (req, res) => {
 })
 
 export const getSubscription = asyncErrorHandler(async (req, res) => {
+    console.log("HIT getSubscription");
+
     const { userId } = req.query;
     requiredFieldsCheck({ args: [userId], fields: ["userId"] });
 
@@ -86,6 +95,8 @@ export const getSubscription = asyncErrorHandler(async (req, res) => {
 })
 
 export const removeSubscription = asyncErrorHandler(async (req, res) => {
+    console.log("HIT removeSubscription");
+
     const { userId, channelId } = req.body;
     requiredFieldsCheck({ args: [userId, channelId], fields: ["userId", "channelId"] });
 
@@ -111,6 +122,8 @@ export const removeSubscription = asyncErrorHandler(async (req, res) => {
 })
 
 export const addComment = asyncErrorHandler(async (req, res) => {
+    console.log("HIT addComment");
+
     const { userId, videoId, comment } = req.body;
     requiredFieldsCheck({ args: [userId, videoId, comment], fields: ["userId", "videoId", "comment"] });
 
@@ -127,6 +140,8 @@ export const addComment = asyncErrorHandler(async (req, res) => {
 })
 
 export const getComment = asyncErrorHandler(async (req, res) => {
+    console.log("HIT getComment");
+
     const { userId } = req.query;
     requiredFieldsCheck({ args: [userId], fields: ["userId"] });
 
@@ -139,6 +154,8 @@ export const getComment = asyncErrorHandler(async (req, res) => {
 })
 
 export const removeComment = asyncErrorHandler(async (req, res) => {
+    console.log("HIT removeComment");
+
     const { userId, comment, videoId } = req.body;
     requiredFieldsCheck({ args: [userId, videoId, comment], fields: ["userId", "videoId", "comment"] });
 

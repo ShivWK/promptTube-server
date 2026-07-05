@@ -29,6 +29,8 @@ export const getSearchSuggestion = async (req, res) => {
 }
 
 export const getSearchedVideos = async (req, res) => {
+    console.log("HIT getSearchedVideo");
+
     try {
         const searchedTerm = req.query.searchedTerm;
         const response = await fetch(``)
