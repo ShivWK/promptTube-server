@@ -1,14 +1,14 @@
+import "./config/env.js";
 import express from "express";
 import mongoose from "mongoose";
-import dotenv from "dotenv";
 import cors from "cors";
 import youtubeRouter from "./routes/youtubeRouter.js";
 import userRouter from "./routes/userActivityRoutes.js";
+import aiRouter from "./routes/aiRoutes.js";
 
 const app = express();
 
 app.use(express.json());
-dotenv.config({ path: "./.env" });
 
 const allowedOrigins = [
     "http://localhost:5173",
@@ -51,6 +51,7 @@ app.get("/api/server/wake-up", (req, res) => {
 
 app.use("/api/v1/youtube", youtubeRouter);
 app.use("/api/v1/user", userRouter);
+app.use("/api/v1/ai", aiRouter);
 
 app.use((req, res) => {
     res.status(404).send("Not found");

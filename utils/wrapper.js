@@ -2,7 +2,7 @@ export const asyncErrorHandler = (func) => async (req, res, next) => {
     try {
       await func(req, res, next)
     } catch (err) {
-        console.log("Failed due to error", err);
+        console.log("Failed due to", err);
 
         return res.status(500).json({
             status: "failed",
