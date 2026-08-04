@@ -1,14 +1,11 @@
 import groq from '../utils/groq.js';
+import { YoutubeTranscript } from "youtube-transcript";
 
 import summaryPrompt from '../prompts/summaryPrompt.js';
 import keyPointsPrompt from '../prompts/keyTakeawaysPrompt.js';
 import questionPrompt from '../prompts/answerQuestionPrompt.js';
 
-export async function askAI({
-    transcript,
-    mode,
-    question,
-}) {
+export async function askAI({ transcript, mode, question }) {
     let prompt;
 
     switch (mode) {
@@ -45,6 +42,13 @@ export async function askAI({
     });
 
     console.log(completion);
-
     return completion.choices[0].message.content;
 }
+
+export const getTranscript = async (videoId) => {
+    const transcript = await YoutubeTranscript.fetchTranscript(videoId);
+
+    return transcript
+        .map(item => item.text)
+        .join(" ");
+};

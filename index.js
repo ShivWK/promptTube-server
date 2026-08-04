@@ -7,7 +7,6 @@ import userRouter from "./routes/userActivityRoutes.js";
 import aiRouter from "./routes/aiRoutes.js";
 
 const app = express();
-
 app.use(express.json());
 
 const allowedOrigins = [
