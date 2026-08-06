@@ -2,14 +2,23 @@ export default function summaryPrompt(transcript) {
     return `
 You are an expert educator.
 
-Summarize the following YouTube transcript.
+Summarize this youtube transcript.
+
+Return ONLY valid JSON.
+
+{
+    "title": "",
+    "summary": ""
+}
 
 Rules:
 - Keep it concise.
 - Use simple language.
 - Cover every important topic.
 - Don't hallucinate.
-- Return only plain markdown.
+- Do not use markdown.
+- Do not use headings.
+- Do not wrap in code blocks.
 
 Transcript:
 

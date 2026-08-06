@@ -28,6 +28,8 @@ export async function askAI({ transcript, mode, question }) {
             throw new Error("Invalid AI mode");
     }
 
+    // console.log("Prepared Prompt", prompt)
+
     const completion = await groq.chat.completions.create({
         model: "llama-3.3-70b-versatile",
 
@@ -41,8 +43,8 @@ export async function askAI({ transcript, mode, question }) {
         ],
     });
 
-    console.log(completion);
-    return completion.choices[0].message.content;
+    const response = JSON.parse(completion.choices[0].message.content);
+    return response;
 }
 
 export const getTranscript = async (videoId) => {

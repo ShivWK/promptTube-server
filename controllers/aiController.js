@@ -5,6 +5,8 @@ export const aiHandler = asyncErrorHandler(async (req, res) => {
     console.log("Hit AiHandler");
     const { mode, transcript, question } = req.body;
 
+    // console.log("Got ", mode, transcript, question)
+
     requiredFieldsCheck({ args: [mode, transcript], fields: ["mode", "transcript"] });
 
     const result = await askAI({
