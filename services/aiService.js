@@ -43,7 +43,21 @@ export async function askAI({ transcript, mode, question }) {
         ],
     });
 
-    const response = JSON.parse(completion.choices[0].message.content);
+    console.log("Completion", JSON.stringify(completion));
+
+    let response = null;
+    const content = completion.choices[0].message.content
+
+    if (mode === "summary") {
+        response = JSON.parse(content);
+    } else if (mode === "keyPoints") {
+        response = content
+            .split("\n")
+            .map(item => item.replace(/^\*\s*/, "").trim())
+            .filter(Boolean);
+    } else {
+
+    }
     return response;
 }
 
