@@ -1,5 +1,5 @@
 import groq from '../utils/groq.js';
-import { YoutubeTranscript } from "youtube-transcript";
+import supadata from '../utils/supadata.js';
 
 import summaryPrompt from '../prompts/summaryPrompt.js';
 import keyPointsPrompt from '../prompts/keyTakeawaysPrompt.js';
@@ -47,10 +47,36 @@ export async function askAI({ transcript, mode, question }) {
     return response;
 }
 
-export const getTranscript = async (videoId) => {
-    const transcript = await YoutubeTranscript.fetchTranscript(videoId);
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-    return transcript
-        .map(item => item.text)
-        .join(" ");
+export const getTranscript = async (videoId) => {
+    const result = await supadata.transcript({
+        url: `https://www.youtube.com/watch?v=${videoId}`,
+        text: true,
+        mode: "auto",
+    });
+
+    if (!("jobId" in result)) {
+        return result.content ?? result;
+    }
+
+    const jobId = result.jobId;
+
+    const MAX_RETRIES = 30;
+
+    for (let i = 0; i < MAX_RETRIES; i++) {
+        await sleep(2000);
+
+        const job = await supadata.transcript.getJobStatus(jobId);
+
+        if (job.status === "completed") {
+            return job.content;
+        }
+
+        if (job.status === "failed") {
+            throw new Error(job.error);
+        }
+    }
+
+    throw new Error("Transcript generation timed out.");
 };
