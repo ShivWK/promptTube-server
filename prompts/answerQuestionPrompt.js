@@ -11,7 +11,7 @@ Answer the user's question ONLY using the information available in the video's c
 ${transcript}
 
 Rules:
-- Base every answer only on the video's content, but question is genuine then you can answer it but mention that "it is not in the video but i tell you" like this.
+- Base every answer only on the video's content, but if question is genuine then you can answer it but mention that "it is not in the video but i tell you" something like this and answer the question.
 - Never mention "transcript", "transcription", or "provided transcript".
 - Speak naturally as if you understood the video.
 - If the video doesn't contain enough information to answer the question, politely say something like:
