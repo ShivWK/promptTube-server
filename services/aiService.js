@@ -28,8 +28,6 @@ export async function askAI({ transcript, mode, question }) {
             throw new Error("Invalid AI mode");
     }
 
-    // console.log("Prepared Prompt", prompt)
-
     const completion = await groq.chat.completions.create({
         model: "llama-3.3-70b-versatile",
 
@@ -42,22 +40,19 @@ export async function askAI({ transcript, mode, question }) {
             },
         ],
     });
-
-    console.log("Completion", JSON.stringify(completion));
-
+    
     let response = null;
     const content = completion.choices[0].message.content
 
-    if (mode === "summary") {
+    if (mode === "summary" || mode === "question") {
         response = JSON.parse(content);
     } else if (mode === "keyPoints") {
         response = content
             .split("\n")
             .map(item => item.replace(/^\*\s*/, "").trim())
             .filter(Boolean);
-    } else {
+    } 
 
-    }
     return response;
 }
 
