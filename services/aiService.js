@@ -102,12 +102,9 @@ export const smartSearch = async (smartQuery) => {
         searchIntent.searchQuery
     );
 
-    const rankedResults = rankVideos(
-        searchResults,
-        searchIntent
-    );
+    const rankedResults = rankVideos(searchResults, searchIntent);
 
-    const candidates = rankedResults.slice(0, 8);
+    const candidates = rankedResults.slice(0, 10);
 
     const videoIds = candidates
         .map(video => video.id.videoId)
