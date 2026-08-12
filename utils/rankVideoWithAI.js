@@ -45,7 +45,7 @@ Return ONLY valid JSON:
     ]
 }
 
-Videos:
+Videos: 
 ${JSON.stringify(videos)}
 `;
 

@@ -4,7 +4,7 @@ export const asyncErrorHandler = (func) => async (req, res, next) => {
     } catch (err) {
         console.log("Failed due to", err);
 
-        return res.status(500).json({
+        return res.status(err.status || 500).json({
             status: "failed",
             message: err.message || "Something went wrong."
         })

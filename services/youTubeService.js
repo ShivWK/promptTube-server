@@ -54,7 +54,7 @@ export const getVideoComments = async (videoId) => {
         const data = await youtubeRequest("/commentThreads", {
             part: "snippet",
             videoId,
-            maxResults: "15",
+            maxResults: "10",
             order: "relevance",
             textFormat: "plainText",
         });

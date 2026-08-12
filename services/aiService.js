@@ -9,6 +9,7 @@ import { searchYouTube, getVideoComments, getVideoDetails } from './youTubeServi
 import { analyzeSearchQuery } from '../utils/analazeSearchQuery.js';
 import { rankVideos } from '../utils/rankVideos.js';
 import { rankVideosWithAI } from '../utils/rankVideoWithAI.js';
+import { compressVideoData } from '../utils/compressVideosData.js';
 
 export async function askAI({ transcript, mode, question }) {
     let prompt;
@@ -98,15 +99,11 @@ export const getTranscript = async (videoId) => {
 export const smartSearch = async (smartQuery) => {
     const searchIntent = await analyzeSearchQuery(smartQuery);
 
-    const searchResults = await searchYouTube(
-        searchIntent.searchQuery
-    );
+    const searchResults = await searchYouTube(searchIntent.searchQuery);
 
     const rankedResults = rankVideos(searchResults, searchIntent);
 
-    const candidates = rankedResults.slice(0, 10);
-
-    // console.log("Selected candidates", candidates)
+    const candidates = rankedResults.slice(0, 6);
 
     const videoIds = candidates
         .map(video => video.id.videoId)
@@ -117,14 +114,19 @@ export const smartSearch = async (smartQuery) => {
     const enrichedVideos = await Promise.all(
         videoDetails.map(async (video) => ({
             ...video,
+            _smartScore: candidates.find(candidateVideo => candidateVideo.id.videoId === video.id)?._smartScore,
             comments: await getVideoComments(video.id),
         }))
     );
 
+    const videos = compressVideoData(enrichedVideos)
+
+    // console.log("Final video list", videos);
+
     const aiResult = await rankVideosWithAI(
         smartQuery,
         searchIntent,
-        enrichedVideos,
+        videos,
     );
 
     const recommendations = aiResult.recommendations.map((recommendation) => {
