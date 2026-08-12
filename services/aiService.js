@@ -122,8 +122,6 @@ export const smartSearch = async (smartQuery) => {
         }))
     );
 
-    console.log("Enrich videos", enrichedVideos);
-
     const aiResult = await rankVideosWithAI(
         smartQuery,
         searchIntent,
