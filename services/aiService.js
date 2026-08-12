@@ -106,6 +106,8 @@ export const smartSearch = async (smartQuery) => {
 
     const candidates = rankedResults.slice(0, 10);
 
+    // console.log("Selected candidates", candidates)
+
     const videoIds = candidates
         .map(video => video.id.videoId)
         .filter(Boolean);
