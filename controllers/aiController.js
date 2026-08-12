@@ -1,5 +1,5 @@
 import { asyncErrorHandler, requiredFieldsCheck } from "../utils/wrapper.js";
-import { askAI, getTranscript } from "../services/aiService.js";
+import { askAI, getTranscript, smartSearch } from "../services/aiService.js";
 
 export const aiHandler = asyncErrorHandler(async (req, res) => {
     console.log("Hit AiHandler");
@@ -43,3 +43,20 @@ export const transcriber = asyncErrorHandler(async (req, res) => {
         transcript
     })
 });
+
+export const smartSearchHandler = asyncErrorHandler(async (req, res) => {
+    console.log("Hit Smart Search");
+    const { smartQuery } = req.body;
+
+    requiredFieldsCheck({
+        args: [smartQuery],
+        fields: ["smartQuery"],
+    });
+
+    const result = await smartSearch(smartQuery);
+
+    return res.status(200).json({
+        success: true,
+        data: result,
+    });
+})

@@ -5,6 +5,11 @@ import summaryPrompt from '../prompts/summaryPrompt.js';
 import keyPointsPrompt from '../prompts/keyTakeawaysPrompt.js';
 import questionPrompt from '../prompts/answerQuestionPrompt.js';
 
+import { searchYouTube, getVideoComments, getVideoDetails } from './youTubeService.js';
+import { analyzeSearchQuery } from '../utils/analazeSearchQuery.js';
+import { rankVideos } from '../utils/rankVideos.js';
+import { rankVideosWithAI } from '../utils/rankVideoWithAI.js';
+
 export async function askAI({ transcript, mode, question }) {
     let prompt;
 
@@ -40,7 +45,7 @@ export async function askAI({ transcript, mode, question }) {
             },
         ],
     });
-    
+
     let response = null;
     const content = completion.choices[0].message.content
 
@@ -51,7 +56,7 @@ export async function askAI({ transcript, mode, question }) {
             .split("\n")
             .map(item => item.replace(/^\*\s*/, "").trim())
             .filter(Boolean);
-    } 
+    }
 
     return response;
 }
@@ -88,4 +93,53 @@ export const getTranscript = async (videoId) => {
     }
 
     throw new Error("Transcript generation timed out.");
+};
+
+export const smartSearch = async (smartQuery) => {
+    const searchIntent = await analyzeSearchQuery(smartQuery);
+
+    const searchResults = await searchYouTube(
+        searchIntent.searchQuery
+    );
+
+    const rankedResults = rankVideos(
+        searchResults,
+        searchIntent
+    );
+
+    const candidates = rankedResults.slice(0, 8);
+
+    const videoIds = candidates
+        .map(video => video.id.videoId)
+        .filter(Boolean);
+
+    const videoDetails = await getVideoDetails(videoIds);
+
+    const enrichedVideos = await Promise.all(
+        videoDetails.map(async (video) => ({
+            ...video,
+            comments: await getVideoComments(video.id),
+        }))
+    );
+
+    console.log("Enrich videos", enrichedVideos);
+
+    const aiResult = await rankVideosWithAI(
+        smartQuery,
+        searchIntent,
+        enrichedVideos,
+    );
+
+    const recommendations = aiResult.recommendations.map((recommendation) => {
+        const video = enrichedVideos.find(
+            (video) => video.id === recommendation.videoId
+        );
+
+        return {
+            ...video,
+            ...recommendation,
+        };
+    });
+
+    return recommendations;
 };
