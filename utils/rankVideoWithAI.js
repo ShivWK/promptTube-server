@@ -63,11 +63,6 @@ ${JSON.stringify(videos)}
         },
     });
 
-    // console.log(
-    //     "AI Content:",
-    //     completion.choices[0].message.content
-    // );
-
     return JSON.parse(
         completion.choices[0].message.content
     );

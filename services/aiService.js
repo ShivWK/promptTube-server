@@ -98,10 +98,13 @@ export const getTranscript = async (videoId) => {
 
 export const smartSearch = async (smartQuery) => {
     const searchIntent = await analyzeSearchQuery(smartQuery);
+    console.log("Analyser called")
 
     const searchResults = await searchYouTube(searchIntent.searchQuery);
+    console.log("Videos searched")
 
     const rankedResults = rankVideos(searchResults, searchIntent);
+    console.log("Videos ranked")
 
     const candidates = rankedResults.slice(0, 6);
 
@@ -110,6 +113,7 @@ export const smartSearch = async (smartQuery) => {
         .filter(Boolean);
 
     const videoDetails = await getVideoDetails(videoIds);
+    console.log("Video details are fetched")
 
     const enrichedVideos = await Promise.all(
         videoDetails.map(async (video) => ({
@@ -118,16 +122,16 @@ export const smartSearch = async (smartQuery) => {
             comments: await getVideoComments(video.id),
         }))
     );
+    console.log("Comments are added")
 
     const videos = compressVideoData(enrichedVideos)
-
-    // console.log("Final video list", videos);
 
     const aiResult = await rankVideosWithAI(
         smartQuery,
         searchIntent,
         videos,
     );
+    console.log("Videos are ranked by AI")
 
     const recommendations = aiResult.recommendations.map((recommendation) => {
         const video = enrichedVideos.find(
@@ -139,6 +143,7 @@ export const smartSearch = async (smartQuery) => {
             ...recommendation,
         };
     });
+    console.log("Done")
 
     return recommendations;
 };
