@@ -9,10 +9,8 @@ import {
     addComment,
     getComment,
     removeComment,
-    uploadProfilePicture
 } from "./../controllers/userActivityController.js";
 import verifyFirebaseToken from "../middleware/authMiddleware.js";
-import upload from "../middleware/multerMiddleware.js";
 
 const userRouter = express.Router();
 userRouter.use(verifyFirebaseToken);
@@ -31,7 +29,5 @@ userRouter.route("/comments")
     .patch(addComment)
     .post(getComment)
     .delete(removeComment);
-
-userRouter.patch("/profile/picture", upload.single("profilePic"), uploadProfilePicture)
 
 export default userRouter;

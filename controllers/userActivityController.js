@@ -182,34 +182,39 @@ export const removeComment = asyncErrorHandler(async (req, res) => {
 })
 
 export const uploadProfilePicture = asyncErrorHandler(async (req, res) => {
-    console.log("Upload pic HIt")
+    console.log("Upload pic Hit", req);
     const uid = req.user.uid;
 
     if (!req.file) {
         return res.status(400).json({
             success: false,
-            message: "PRofile picture is required"
-        })
+            message: "Profile picture is required",
+        });
     }
 
-    const result = new Promise((resolve, reject) => {
-        const uploadStream = cloudinary.uploader.upload_stream({
-            folder: "profile_pictures",
-            public_id: uid,
-            overwrite: true,
-            resource_type: "image",
-        }, (error, result) => {
-            if (error) {
-                reject(error)
-            } else {
-                resolve(result)
+    const result = await new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(
+            {
+                folder: "profile_pictures",
+                public_id: uid,
+                overwrite: true,
+                resource_type: "image",
+            },
+            (error, result) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve(result);
+                }
             }
-        })
-    })
+        );
+
+        uploadStream.end(req.file.buffer);
+    });
 
     return res.status(200).json({
         success: true,
         message: "Profile picture updated successfully",
         photoURL: result.secure_url,
-    })
-})
+    });
+});

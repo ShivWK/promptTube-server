@@ -5,9 +5,11 @@ import cors from "cors";
 import youtubeRouter from "./routes/youtubeRouter.js";
 import userRouter from "./routes/userActivityRoutes.js";
 import aiRouter from "./routes/aiRoutes.js";
+import upload from "./middleware/multerMiddleware.js";
+import { uploadProfilePicture } from "./controllers/userActivityController.js";
+import verifyFirebaseToken from "./middleware/authMiddleware.js";
 
 const app = express();
-app.use(express.json());
 
 const allowedOrigins = [
     "http://localhost:5173",
@@ -48,6 +50,9 @@ app.get("/api/server/wake-up", (req, res) => {
     })
 })
 
+app.patch("/api/v1/user/profilePicture", verifyFirebaseToken, upload.single("profilePic"), uploadProfilePicture)
+
+app.use(express.json());
 app.use("/api/v1/youtube", youtubeRouter);
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/ai", aiRouter);
