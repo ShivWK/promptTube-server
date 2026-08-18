@@ -1,4 +1,4 @@
-import groq from "./groq.js";
+import groq from "../config/groq.js";
 
 export const analyzeSearchQuery = async (smartQuery) => {
     const prompt = `
@@ -40,7 +40,7 @@ Rules:
                 content: prompt,
             },
         ],
-        model: "llama-3.3-70b-versatile",
+        model: process.env.GROQ_MODEL,
         temperature: 0,
     });
 

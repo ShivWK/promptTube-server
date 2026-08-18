@@ -1,4 +1,4 @@
-import groq from '../utils/groq.js';
+import groq from "../config/groq.js"; 
 import supadata from '../utils/supadata.js';
 
 import summaryPrompt from '../prompts/summaryPrompt.js';
@@ -35,7 +35,7 @@ export async function askAI({ transcript, mode, question }) {
     }
 
     const completion = await groq.chat.completions.create({
-        model: "llama-3.3-70b-versatile",
+        model: process.env.GROQ_MODEL,
 
         temperature: 0.3,
 

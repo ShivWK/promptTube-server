@@ -4,6 +4,8 @@ export const compressVideoData = (videos) => {
         const statistics = video.statistics || {};
         const contentDetails = video.contentDetails || {};
 
+        
+
         return {
             videoId: video.id,
 
@@ -23,9 +25,7 @@ export const compressVideoData = (videos) => {
 
             likes: Number(statistics.likeCount || 0),
 
-            commentCount: Number(
-                statistics.commentCount || 0
-            ),
+            commentCount: Number(statistics.commentCount || 0),
 
             comments: (video.comments || [])
                 .slice(0, 3)

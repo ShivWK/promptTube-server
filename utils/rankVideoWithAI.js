@@ -1,4 +1,4 @@
-import groq from "./groq.js";
+import groq from "../config/groq.js";
 
 export const rankVideosWithAI = async (
     smartQuery,
@@ -56,7 +56,7 @@ ${JSON.stringify(videos)}
                 content: prompt,
             },
         ],
-        model: "llama-3.3-70b-versatile",
+        model: process.env.GROQ_MODEL,
         temperature: 0.2,
         response_format: {
             type: "json_object",

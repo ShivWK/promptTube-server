@@ -2,6 +2,7 @@ import { asyncErrorHandler, requiredFieldsCheck, clearIfEmpty } from "./../utils
 import UserActivityModel from "./../models/userActivityModel.js";
 import SubscriptionsModel from "./../models/subscriptions.js";
 import CommentsModel from "./../models/commentsModel.js";
+import cloudinary from "../config/cloudinary.js";
 
 export const addVideo = asyncErrorHandler(async (req, res) => {
     console.log("HIT addVideo");
@@ -24,7 +25,7 @@ export const addVideo = asyncErrorHandler(async (req, res) => {
 export const getVideo = asyncErrorHandler(async (req, res) => {
     console.log("HIT getVideo");
 
-    const { userId } = req.query;
+    const { userId } = req.body;
     requiredFieldsCheck({ args: [userId], fields: ["userId"] })
 
     const doc = await UserActivityModel.find({ userId });
@@ -83,7 +84,7 @@ export const addSubscription = asyncErrorHandler(async (req, res) => {
 export const getSubscription = asyncErrorHandler(async (req, res) => {
     console.log("HIT getSubscription");
 
-    const { userId } = req.query;
+    const { userId } = req.body;
     requiredFieldsCheck({ args: [userId], fields: ["userId"] });
 
     const doc = await SubscriptionsModel.find({ userId })
@@ -142,7 +143,7 @@ export const addComment = asyncErrorHandler(async (req, res) => {
 export const getComment = asyncErrorHandler(async (req, res) => {
     console.log("HIT getComment");
 
-    const { userId } = req.query;
+    const { userId } = req.body;
     requiredFieldsCheck({ args: [userId], fields: ["userId"] });
 
     const doc = await CommentsModel.find({ userId })
@@ -178,4 +179,37 @@ export const removeComment = asyncErrorHandler(async (req, res) => {
         const doc = await CommentsModel.findOneAndDelete({ userId, videoId });
         console.log("Removed Document", doc);
     }
+})
+
+export const uploadProfilePicture = asyncErrorHandler(async (req, res) => {
+    console.log("Upload pic HIt")
+    const uid = req.user.uid;
+
+    if (!req.file) {
+        return res.status(400).json({
+            success: false,
+            message: "PRofile picture is required"
+        })
+    }
+
+    const result = new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream({
+            folder: "profile_pictures",
+            public_id: uid,
+            overwrite: true,
+            resource_type: "image",
+        }, (error, result) => {
+            if (error) {
+                reject(error)
+            } else {
+                resolve(result)
+            }
+        })
+    })
+
+    return res.status(200).json({
+        success: true,
+        message: "Profile picture updated successfully",
+        photoURL: result.secure_url,
+    })
 })
