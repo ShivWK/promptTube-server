@@ -11,22 +11,23 @@ import { rankVideos } from '../utils/rankVideos.js';
 import { rankVideosWithAI } from '../utils/rankVideoWithAI.js';
 import { compressVideoData } from '../utils/compressVideosData.js';
 
-export async function askAI({ transcript, mode, question }) {
+export async function askAI({ transcript, mode, question, videoMetadata }) {
     let prompt;
 
     switch (mode) {
         case "summary":
-            prompt = summaryPrompt(transcript);
+            prompt = summaryPrompt(transcript, videoMetadata);
             break;
 
         case "keyPoints":
-            prompt = keyPointsPrompt(transcript);
+            prompt = keyPointsPrompt(transcript, videoMetadata);
             break;
 
         case "question":
             prompt = questionPrompt(
                 transcript,
-                question
+                question,
+                videoMetadata
             );
             break;
 

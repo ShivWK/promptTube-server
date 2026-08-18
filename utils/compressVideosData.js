@@ -4,8 +4,6 @@ export const compressVideoData = (videos) => {
         const statistics = video.statistics || {};
         const contentDetails = video.contentDetails || {};
 
-        
-
         return {
             videoId: video.id,
 

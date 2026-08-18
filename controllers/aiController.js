@@ -1,16 +1,21 @@
 import { asyncErrorHandler, requiredFieldsCheck } from "../utils/wrapper.js";
 import { askAI, getTranscript, smartSearch } from "../services/aiService.js";
+import { getVideoDetails } from "../services/youTubeService.js";
 
 export const aiHandler = asyncErrorHandler(async (req, res) => {
     console.log("Hit AiHandler");
-    const { mode, transcript, question } = req.body;
+    const { mode, transcript, question, videoMetadata } = req.body;
 
-    requiredFieldsCheck({ args: [mode, transcript], fields: ["mode", "transcript"] });
+    requiredFieldsCheck({
+        args: [mode, transcript, videoMetadata],
+        fields: ["mode", "transcript", "videoMetadata"]
+    });
 
     const result = await askAI({
         transcript,
         mode,
         question,
+        videoMetadata
     });
 
     return res.status(200).json({
@@ -43,6 +48,27 @@ export const transcriber = asyncErrorHandler(async (req, res) => {
         transcript
     })
 });
+
+export const giveMetaData = async (req, res) => {
+    console.log("Hit MetaData");
+    const { videoId } = req.body;
+
+    requiredFieldsCheck({ args: [videoId], fields: ["videoId"] });
+
+    const metaData = await getVideoDetails(videoId);
+
+    if (!metaData) {
+        return res.status(404).json({
+            success: false,
+            message: "No metadata is available for this video."
+        });
+    }
+
+    return res.status(200).json({
+        success: true,
+        metadata: metaData,
+    })
+}
 
 export const smartSearchHandler = asyncErrorHandler(async (req, res) => {
     console.log("Hit Smart Search");

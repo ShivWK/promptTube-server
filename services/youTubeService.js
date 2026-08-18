@@ -7,9 +7,7 @@ const youtubeRequest = async (endpoint, params) => {
     });
 
     const response = await fetch(`${YOUTUBE_API_URL}${endpoint}?${searchParams}`, {
-        headers: {
-            "Referer": "https://prompttube-server.onrender.com"
-        }
+        headers: {"Referer": "https://prompttube-server.onrender.com"}
     });
 
     const data = await response.json();
@@ -42,7 +40,7 @@ export const getVideoDetails = async (videoIds) => {
 
     const data = await youtubeRequest("/videos", {
         part: "snippet,contentDetails,statistics",
-        id: videoIds.join(","),
+        id: Array.isArray(videoIds) ? videoIds.join(",") : videoIds,
     });
 
     return data.items || [];
@@ -65,12 +63,7 @@ export const getVideoComments = async (videoId) => {
             ) || []
         );
     } catch (error) {
-        // Some videos have comments disabled.
-        console.warn(
-            `Could not fetch comments for ${videoId}:`,
-            error.message
-        );
-
+        console.warn(`Could not fetch comments for ${videoId}:`,error.message);
         return [];
     }
 };
