@@ -13,7 +13,6 @@ const app = express();
 
 const allowedOrigins = [
     "http://localhost:5173",
-    "https://prompttube-ai.shivendra.site",
     "https://prompttube.shivendradwivedi.com"
 ]
 
